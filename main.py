@@ -1,13 +1,14 @@
 from libs.random_bit import random_insert_space
 
-space_size, bit25, first_impro = random_insert_space()
+result_pack, space_size = random_insert_space()
 
-count_row = 1
-print("="*70+"space_size"+"="*70)
-for row in space_size:
-    print("{} - {}".format(count_row, row))
-    count_row += 1
+print("bit_init : ", result_pack[0])
+print("init decimal : ", result_pack[1])
 
-print("="*150)
-print("First-improvement : {}".format(first_impro))
-print("25 bit problem : ", bit25)
+print("first improvement : ",  result_pack[2])
+print("first index : ", result_pack[3])
+print("first decimal : ", result_pack[4])
+
+print("="*50+"space_size"+"="*50)
+print(space_size)
+

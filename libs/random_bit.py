@@ -1,4 +1,5 @@
 from random import randrange
+from unittest import result
 
 
 def listToString(s):
@@ -11,40 +12,41 @@ def listToString(s):
 
 def random_25_bit(size):
     bit_25 = []
+    bit_25_string = []
     for binary in range(size):
         bit_25.append(randrange(2))
+    
+    bit_25_string.append(listToString(bit_25))
 
-    return bit_25
+    return bit_25_string
 
 def random_insert_space():
     space_size = []
-    for count in range(25):
-        space_in = []
-        for count in range(2):
-            space_in.append(random_25_bit(25))
+    result_pack = []
+    bit_to_int = None
+    bit_init = None
+    
+    for count in range(50):
+        space_size.append(random_25_bit(25))
+        bit_init = space_size[0][0]
+        bit_to_int = int(space_size[0][0], 2)
+    
+    result_pack.append(bit_init)
+    result_pack.append(bit_to_int)
 
-        space_size.append(space_in)
 
-    space_size_string = []
-    for space_in_re in space_size:
-        for item in space_in_re:
-            list_re = listToString(item)
-            for count in range(25):
-                space_size_string_in = []
-                for count in range(2):
-                    space_size_string_in.append(list_re)
-        
-            space_size_string.append(space_size_string_in)
+    count += 0
+    for item in space_size:
+        first_impro = None
 
-    choice_25_bit = []
-    first_impro = []
-    for count in range(25):
-        x = randrange(25)
-        y = randrange(2)
-        if first_impro == []:
-            first_impro = "[{}][{}]".format(x+1, y+1)
-        choice_25_bit.append(space_size_string[x][y])
-        if choice_25_bit:
+        if bit_to_int < int(item[0], 2):
+            first_impro, first_impro_index, bit_to_int_first = item[0], space_size.index(item), int(item[0], 2)
             break
 
-    return space_size_string, choice_25_bit, first_impro
+        count += 1
+
+    result_pack.append(first_impro)
+    result_pack.append(first_impro_index)
+    result_pack.append(bit_to_int_first)
+        
+    return result_pack, space_size
