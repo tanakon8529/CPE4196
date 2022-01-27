@@ -11,4 +11,5 @@ print("first decimal : ", result_pack[4])
 
 print("="*50+"space_size"+"="*50)
 print(space_size)
+print(len(space_size))
 
