@@ -10,6 +10,20 @@ def listToString(s):
         
     return str1
 
+def bit_flip(bit):
+    bit_new = []
+    for bit_ele in bit:
+        
+        if bit_ele == '1':
+            bit_ele = '0'
+        else:
+            bit_ele = '1'
+
+        bit_new.append(bit_ele)
+    
+    bit_new_string = listToString(bit_new)
+    return bit_new_string
+
 
 def random_25_bit(size):
     bit_25 = []
@@ -26,6 +40,7 @@ def random_insert_space():
     bit_to_init = None
     bit_init = None
     first_impro = None
+    worst_impro_index = 0
   
     for round in range(50):
         space_size = []
@@ -41,15 +56,25 @@ def random_insert_space():
         count = 0
         for item in space_size:
 
-            if bit_to_init < int(item[0], 2):
-                bit_init, bit_to_init = item[0], int(item[0], 2)
-                first_impro, first_impro_index = item[0], space_size.index(item)
+            item_bit_flip = bit_flip(item[0])
+
+            if bit_to_init < int(item_bit_flip, 2):
+                bit_init, bit_to_init = item_bit_flip, int(item_bit_flip, 2)
+                first_impro = item_bit_flip
+
+                if worst_impro_index < space_size.index(item):
+                    best_impro_index = worst_impro_index
+                    worst_impro_index = space_size.index(item)
                 break
+
+
 
             count += 1
 
     result_pack.append(first_impro)
-    result_pack.append(first_impro_index)
     result_pack.append(bit_to_init)
+    result_pack.append(best_impro_index)
+    result_pack.append(worst_impro_index)
+    
         
     return result_pack, space_size
