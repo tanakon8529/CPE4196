@@ -1,4 +1,5 @@
 from random import randrange
+from turtle import position
 
 def listToString(s):
     str1 = ""
@@ -32,6 +33,20 @@ def random_25_bit(size):
 
     return bit_25_string[0]
 
+def random_position(bit):
+    position = []
+    max_bit = len(bit)
+    for round in range(2):
+        position.append(randrange(max_bit))
+
+    return position
+
+def swap_position(bit, i, j):
+        lst = list(bit)
+        lst[i], lst[j] = lst[j], lst[i]
+        return ''.join(lst)
+    
+
 def random_insert_space():
     result_pack = []
     bit_to_init = None
@@ -41,29 +56,25 @@ def random_insert_space():
   
     for round in range(50):
         space_size = []
-        position_i = 0
-        position_j = 0
         for round_in in range(50):
-            details_item = [random_25_bit(25), position_i, position_j]
+            details_item = random_25_bit(25)
             space_size.append(details_item)
-            if position_j == 4:
-                position_i += 1
-                position_j = -1
-
-            position_j += 1
 
         if bit_init == None:
-            bit_init = space_size[0][0]
-            bit_to_init = int(space_size[0][0], 2)
+            bit_init = space_size[0]
+            bit_to_init = int(space_size[0], 2)
             result_pack.append(bit_init)
             result_pack.append(bit_to_init)
 
         count = 0
         for item in space_size:
 
-            item_bit_flip = bit_flip(item[0])
-
-            if bit_to_init < int(item_bit_flip, 2):
+            item_bit_flip = bit_flip(item)
+            position = random_position(bit_init)
+            bit_init_swap = swap_position(bit_init, position[0], position[1])
+            bit_init_swap_int = int(bit_init_swap, 2)
+ 
+            if bit_init_swap_int < int(item_bit_flip, 2):
                 bit_init, bit_to_init = item_bit_flip, int(item_bit_flip, 2)
                 first_impro = item_bit_flip
 
