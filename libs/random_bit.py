@@ -1,5 +1,4 @@
 from random import randrange
-from turtle import position
 
 def listToString(s):
     str1 = ""
