@@ -1,6 +1,4 @@
 from random import randrange
-from unittest import result
-
 
 def listToString(s):
     str1 = ""
@@ -24,7 +22,6 @@ def bit_flip(bit):
     bit_new_string = listToString(bit_new)
     return bit_new_string
 
-
 def random_25_bit(size):
     bit_25 = []
     bit_25_string = []
@@ -33,7 +30,7 @@ def random_25_bit(size):
     
     bit_25_string.append(listToString(bit_25))
 
-    return bit_25_string
+    return bit_25_string[0]
 
 def random_insert_space():
     result_pack = []
@@ -44,8 +41,16 @@ def random_insert_space():
   
     for round in range(50):
         space_size = []
+        position_i = 0
+        position_j = 0
         for round_in in range(50):
-            space_size.append(random_25_bit(25))
+            details_item = [random_25_bit(25), position_i, position_j]
+            space_size.append(details_item)
+            if position_j == 4:
+                position_i += 1
+                position_j = -1
+
+            position_j += 1
 
         if bit_init == None:
             bit_init = space_size[0][0]
@@ -68,7 +73,6 @@ def random_insert_space():
                 break
 
 
-
             count += 1
 
     result_pack.append(first_impro)
@@ -76,5 +80,4 @@ def random_insert_space():
     result_pack.append(best_impro_index)
     result_pack.append(worst_impro_index)
     
-        
     return result_pack, space_size

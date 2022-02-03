@@ -1,2 +1,6 @@
 libs/__pycache__
 test.py
+
+desktop.ini
+libs/desktop.ini
+utils/desktop.ini
