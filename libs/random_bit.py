@@ -53,20 +53,12 @@ def insert_shift(bit, i , j):
     return ''.join(lst)
 
 
-def hill_climbing(space_size):
-    result_pack = []
-    bit_init = space_size[0]
-    bit_init_int = int(space_size[0], 2)
-    best_impro = space_size.index(bit_init)
-    
-    return result_pack, space_size
-
 
 def random_insert_space(option):
     result_pack = []
     round_impro = 0
     best_impro = None
-    worst_impro = None
+    worst_impro = 0
 
     for round in range(50):
         space_size = []
@@ -80,21 +72,22 @@ def random_insert_space(option):
         if option == "hill_climbing":
             bit_init = space_size[0]
             bit_init_int = int(space_size[0], 2)
-            best_impro = space_size.index(bit_init)
+            first_impro = bit_init
+            first_impro_int = bit_init_int
 
             for item in space_size:
                 item_int = int(item, 2)
                 if item_int > bit_init_int:
-                    first_impro = item
-                    first_impro_int = item_int
-                    round_impro = space_size.index(item)
-                    if best_impro == None:
-                        best_impro = round_impro
-                    break
-
+                    if item_int > first_impro_int:
+                        first_impro = item
+                        first_impro_int = item_int
+                        round_impro = space_size.index(item)
+            
+            if best_impro == None:
+                best_impro = round_impro
             if round_impro < best_impro:
                 best_impro = round_impro
-            if round_impro > best_impro:
+            if round_impro > worst_impro:
                 worst_impro = round_impro
         
         elif option == "simulated_annealing":
