@@ -1,4 +1,4 @@
-from random import randrange, choice, uniform
+from random import randrange, choice, randint
 import math
 
 def listToString(s):
@@ -65,9 +65,10 @@ def random_insert_space(option):
         for round_in in range(50):
             bit_item = random_bit(25)
             position = random_position(bit_item)
-            item_Exchange = Exchange_position(bit_item, position[0], position[1])
-            # item_bit_flip = bit_flip(bit_item)
-            space_size.append(item_Exchange)
+            item_new = insert_shift(bit_item, position[0], position[1])
+            # item_new = Exchange_position(bit_item, position[0], position[1])
+            # item_new = bit_flip(bit_item)
+            space_size.append(item_new)
 
         if option == "hill_climbing":
             bit_init = space_size[0]
@@ -91,7 +92,26 @@ def random_insert_space(option):
                 worst_impro = round_impro
         
         elif option == "simulated_annealing":
-            print("hello")
+            bit_init = space_size[0]
+            bit_init_int = int(space_size[0], 2)
+            first_impro = bit_init
+            first_impro_int = bit_init_int
+
+            temp = 1000
+            t = 1000
+            current_state = bit_init_int
+            while (t > 0):
+                t = temp * 0.1
+                next_state = choice(space_size)
+                next_state_int = int(next_state, 2)
+                delta = value(next_state_int) - current_state
+                if(delta < 0 or (math.exp(-delta / t) >= randint(0, 10))):
+                 current_state = next_state
+            final_state = current_state
+            print(final_state)
+            continue......///
+
+
     
     result_pack.append(bit_init)
     result_pack.append(bit_init_int)
