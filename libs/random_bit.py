@@ -99,7 +99,7 @@ def random_insert_space(option):
         best_impro = None
         worst_impro = None
 
-        initial_temp = 100
+        initial_temp = 1000
         final_temp = .1
         alpha = 0.01
         solution_int = 0
