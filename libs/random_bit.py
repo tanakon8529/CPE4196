@@ -1,4 +1,4 @@
-from random import randrange, choice, randint
+from random import randrange, choice, randint, uniform
 import math
 
 def listToString(s):
@@ -91,27 +91,38 @@ def random_insert_space(option):
             if round_impro > worst_impro:
                 worst_impro = round_impro
         
-        elif option == "simulated_annealing":
-            bit_init = space_size[0]
-            bit_init_int = int(space_size[0], 2)
-            first_impro = bit_init
-            first_impro_int = bit_init_int
+    if option == "simulated_annealing":
+        bit_init = space_size[0]
+        bit_init_int = int(space_size[0], 2)
+        first_impro = bit_init
+        first_impro_int = bit_init_int
+        best_impro = None
+        worst_impro = None
 
-            temp = 1000
-            t = 1000
-            current_state = bit_init_int
-            while (t > 0):
-                t = temp * 0.1
-                next_state = choice(space_size)
-                next_state_int = int(next_state, 2)
-                delta = value(next_state_int) - current_state
-                if(delta < 0 or (math.exp(-delta / t) >= randint(0, 10))):
-                 current_state = next_state
-            final_state = current_state
-            print(final_state)
-            continue......///
+        initial_temp = 100
+        final_temp = .1
+        alpha = 0.01
+        solution_int = 0
+        current_temp = initial_temp
+        current_state = bit_init_int
+        solution = current_state
 
+        while current_temp > final_temp:
+            neighbor  = choice(space_size)
+            neighbor_int = int(neighbor , 2)
+            if current_temp == initial_temp:
+                if neighbor_int > current_state:
+                    solution = neighbor
+                    solution_int = int(solution, 2)
+            else:
+                if neighbor_int > solution_int:
+                    solution = neighbor
+                    solution_int = int(solution, 2)
 
+            current_temp -= alpha
+        
+        first_impro = solution
+        first_impro_int = solution_int
     
     result_pack.append(bit_init)
     result_pack.append(bit_init_int)
