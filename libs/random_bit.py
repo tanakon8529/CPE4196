@@ -1,5 +1,7 @@
+from msilib.schema import Binary
 from random import randrange, choice, randint, uniform
 import math
+from re import I
 
 def listToString(s):
     str1 = ""
@@ -53,9 +55,28 @@ def insert_shift(bit, i , j):
     return ''.join(lst)
 
 
+def convert_list_bit_to_decimal(pack_bit):
+    pack_bit_int = []
+    for bit in pack_bit:
+        bit_int = int(bit, 2)
+        pack_bit_int.append(bit_int)
+
+    return pack_bit_int
+
+
+def convert_list_decimal_to_bit(pack_int):
+    pack_bit = []
+    for item_int in pack_int:
+        item_bit = f'{item_int:25b}'
+        pack_bit.append(item_bit)
+
+    return pack_bit
+
 
 def random_insert_space(option):
     result_pack = []
+    candidate_list = []
+    tabu_list_int = []
     round_impro = 0
     best_impro = None
     worst_impro = 0
@@ -70,11 +91,12 @@ def random_insert_space(option):
             # item_new = bit_flip(bit_item)
             space_size.append(item_new)
 
+        bit_init = space_size[0]
+        bit_init_int = int(space_size[0], 2)
+        first_impro = bit_init
+        first_impro_int = bit_init_int
+
         if option == "hill_climbing":
-            bit_init = space_size[0]
-            bit_init_int = int(space_size[0], 2)
-            first_impro = bit_init
-            first_impro_int = bit_init_int
 
             for item in space_size:
                 item_int = int(item, 2)
@@ -90,12 +112,31 @@ def random_insert_space(option):
                 best_impro = round_impro
             if round_impro > worst_impro:
                 worst_impro = round_impro
+
+
+        if option == "tabu_search":
+            current_state = bit_init_int
+
+            # create candidate
+            space_size_int = convert_list_bit_to_decimal(space_size)
+            candidate_int = max(space_size_int)
+            candidate = f'{candidate_int:25b}'
+            candidate_list.append(candidate)
+
+    if option == "tabu_search":
+        candidate_list_int = convert_list_bit_to_decimal(candidate_list)
+        for count in range(20):
+            candi_max = max(candidate_list_int)
+            tabu_list_int.append(candi_max)
+            if candi_max in tabu_list_int:
+                candidate_list_int.remove(candi_max)
         
+        # tabu_list = convert_list_decimal_to_bit(tabu_list_int)
+        # print(tabu_list)
+
+
     if option == "simulated_annealing":
-        bit_init = space_size[0]
-        bit_init_int = int(space_size[0], 2)
-        first_impro = bit_init
-        first_impro_int = bit_init_int
+ 
         best_impro = None
         worst_impro = None
 
@@ -123,12 +164,13 @@ def random_insert_space(option):
         
         first_impro = solution
         first_impro_int = solution_int
-    
+
     result_pack.append(bit_init)
     result_pack.append(bit_init_int)
     result_pack.append(first_impro)
     result_pack.append(first_impro_int)
     result_pack.append(best_impro)
     result_pack.append(worst_impro)
+    result_pack.append(tabu_list_int)
 
     return result_pack
