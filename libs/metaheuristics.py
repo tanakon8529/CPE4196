@@ -7,6 +7,7 @@ class search_meta(object):
         self.space_size = 50
         self.tabu_tenure = 20
         self.perturbation = 3
+        self.kmax = 100
  
     def listToString(self, s):
         str1 = ""
@@ -75,14 +76,12 @@ class search_meta(object):
         for round_in in range(self.space_size):
             bit_item = self.random_bit(self.size_bit)
             position = self.random_position(bit_item)
-            if option == "simulated_annealing" or option == "tabu_search" or option == "iterated_local_search":
+            if option == "simulated_annealing" or option == "tabu_search" or option == "iterated_local_search" or option == "general_variable_neighbourhood_search":
                 item_new = self.insert_shift(bit_item, position[0], position[1])
             if option == "hill_climbing":
                 item_new = self.Exchange_position(bit_item, position[0], position[1])
                 # item_new = self.bit_flip(bit_item)
             if option == "tabu_search":
-                item_new = self.insert_shift(bit_item, position[0], position[1])
-            if option == "iterated_local_search":
                 item_new = self.insert_shift(bit_item, position[0], position[1])
             space_size.append(item_new)
 
@@ -162,6 +161,24 @@ class search_meta(object):
 
         return first_impro, first_impro_int, round_impro
 
+    def general_variable_neighbourhood_search(self, space_size, bit_init):
+    
+        neighbor_int_current = int(bit_init, 2)
+        k_count = 0
+        while k_count != self.kmax:
+            k_count = 1
+            while k_count < self.kmax:
+                neighbor = choice(space_size)
+                neighbor_int = int(neighbor, 2)
+                if neighbor_int > neighbor_int_current:
+                    neighbor_int_current = neighbor_int
+                    k_count = 1
+                else:
+                    k_count += 1
+
+        return neighbor, neighbor_int_current
+
+
     def algorithms_search(self, option):
         result_pack = []
         candidate_list = []
@@ -169,8 +186,8 @@ class search_meta(object):
         best_impro = None
         round_impro = 0
         worst_impro = 0
+        neighbor_int_current = None
         
-
         for round in range(self.criteria_iterations):
             space_size = self.random_space_size(option)
             bit_init = space_size[0]
@@ -202,6 +219,9 @@ class search_meta(object):
                 if round_impro > worst_impro:
                     worst_impro = round_impro
 
+            if option == "general_variable_neighbourhood_search":
+                neighbor, neighbor_int_current = self.general_variable_neighbourhood_search(space_size, bit_init)
+
         if option == "tabu_search":
             tabu_list = self.tabu_search_candi_max(candidate_list)
 
@@ -212,5 +232,7 @@ class search_meta(object):
         result_pack.append(best_impro)
         result_pack.append(worst_impro)
         result_pack.append(tabu_list)
+        result_pack.append(neighbor)
+        result_pack.append(neighbor_int_current)
 
         return result_pack
