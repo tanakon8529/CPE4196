@@ -5,6 +5,7 @@ class search_meta(object):
         self.criteria_iterations = 50
         self.size_bit = 25
         self.space_size = 50
+        self.initial_temp = 1000
         self.tabu_tenure = 20
         self.perturbation = 3
         self.kmax = 100
@@ -81,8 +82,6 @@ class search_meta(object):
             if option == "hill_climbing":
                 item_new = self.Exchange_position(bit_item, position[0], position[1])
                 # item_new = self.bit_flip(bit_item)
-            if option == "tabu_search":
-                item_new = self.insert_shift(bit_item, position[0], position[1])
             space_size.append(item_new)
 
         return space_size
@@ -102,19 +101,17 @@ class search_meta(object):
     def simulated_annealing(self, bit_init_int, space_size):
         best_impro = None
         worst_impro = None
-
-        initial_temp = 1000
         final_temp = .1
         alpha = 0.01
         solution_int = 0
-        current_temp = initial_temp
+        current_temp = self.initial_temp
         current_state = bit_init_int
         solution = current_state
 
         while current_temp > final_temp:
             neighbor  = choice(space_size)
             neighbor_int = int(neighbor , 2)
-            if current_temp == initial_temp:
+            if current_temp == self.initial_temp:
                 if neighbor_int > current_state:
                     solution = neighbor
                     solution_int = int(solution, 2)
